@@ -46,6 +46,4 @@ private:
 	float mCamOffset;
 	float mExtrasCamOffset;
 	float mExtrasFadeOpacity;
-
-//	ImageComponent* mBackgroundOverlay;
 };

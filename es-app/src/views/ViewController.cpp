@@ -15,6 +15,7 @@
 ViewController* ViewController::sInstance = NULL;
 int ViewController::HEIGHT = 120;
 int ViewController::WIDTH = 260;
+int ViewController::HELP_HEIGHT = 50;
 
 ViewController* ViewController::get()
 {
@@ -36,12 +37,20 @@ ViewController::ViewController(Window* window)
 	mBackgroundOverlay = new ImageComponent(window);
 	mBackgroundOverlay->setImage(":/background.png");
 
+	mHelpBG = new ImageComponent(window);
+	mHelpBG->setImage(":/blank.png");
+
 	mLogoList = NULL;
 }
 
 ViewController::~ViewController()
 {
 	delete mBackgroundOverlay;
+	mBackgroundOverlay = NULL;
+
+	delete mHelpBG;
+	mHelpBG = NULL;
+
 	if (mLogoList != NULL) {
 		for (int i = 0; i < mRow; ++i) {
 			for (int j = 0; j < mCol; ++j) {
@@ -103,6 +112,18 @@ void ViewController::goToPrevGameList()
 	goToGameList(system->getPrev());
 }
 
+void ViewController::translateBackground(float x, float y) {
+	mBackgroundOverlay->setPosition(mBackgroundOverlay->getPosition() + Eigen::Vector3f(x, y, 0) - mOffset);
+	for (int i = 0; i < mRow; ++i) {
+		for (int j = 0; j < mCol; ++j) {
+			mLogoList[i][j]->setPosition(mLogoList[i][j]->getPosition() + Eigen::Vector3f(x, y, 0) - mOffset);
+		}
+	}
+	mHelpBG->setPosition(mHelpBG->getPosition() + Eigen::Vector3f(x, y, 0) - mOffset);
+
+	mOffset = Eigen::Vector3f(x, y, 0);
+}
+
 void ViewController::goToGameList(SystemData* system)
 {
 	if(mState.viewing == SYSTEM_SELECT)
@@ -114,6 +135,9 @@ void ViewController::goToGameList(SystemData* system)
 		sysList->setPosition(sysId * (float)Renderer::getScreenWidth(), sysList->getPosition().y());
 		offX = sysList->getPosition().x() - offX;
 		mCamera.translation().x() -= offX;
+		LOG(LogInfo) << "goToGameList " << -offX;
+
+		translateBackground(-offX, 0);
 	}
 
 	mState.viewing = GAME_LIST;
@@ -132,6 +156,9 @@ void ViewController::playViewTransition()
 	// no need to animate, we're not going anywhere (probably goToNextGamelist() or goToPrevGamelist() when there's only 1 system)
 	if(target == -mCamera.translation() && !isAnimationPlaying(0))
 		return;
+
+	LOG(LogInfo) << "playViewTransition " << target;
+	translateBackground(target.x(), target.y());
 
 	if(Settings::getInstance()->getString("TransitionStyle") == "fade")
 	{
@@ -304,13 +331,13 @@ void ViewController::update(int deltaTime)
 			for (int j = 0; j < mCol; ++j) {
 				Eigen::Vector3f pos = mLogoList[i][j]->getPosition();
 				if (i % 2 == 0) {
-					if (pos.x() > Renderer::getScreenWidth()) {
+					if (pos.x() > mOffset.x() + Renderer::getScreenWidth()) {
 						pos -= Eigen::Vector3f(WIDTH * mCol, 0, 0);
 					} else {
 						pos += Eigen::Vector3f(deltaTime / 1000.0f * 50, 0, 0);
 					}
 				} else {
-					if (pos.x() < -WIDTH) {
+					if (pos.x() < mOffset.x() - WIDTH) {
 						pos += Eigen::Vector3f(WIDTH * mCol, 0, 0);
 					} else {
 						pos -= Eigen::Vector3f(deltaTime / 1000.0f * 50, 0, 0);
@@ -338,6 +365,8 @@ void ViewController::render(const Eigen::Affine3f& parentTrans)
 			mLogoList[i][j]->render(trans);
 		}
 	}
+
+	mHelpBG->render(trans);
 
 	// draw systemview
 	getSystemListView()->render(trans);
@@ -367,6 +396,8 @@ void ViewController::render(const Eigen::Affine3f& parentTrans)
 
 void ViewController::preload()
 {
+	LOG(LogInfo) << "ViewController::preload";
+	mOffset = Eigen::Vector3f(0, 0, 0);
 	mRow = Renderer::getScreenHeight() / ViewController::HEIGHT + 1;
 	mCol = Renderer::getScreenWidth() / ViewController::WIDTH + 2;
 	mLogoList = new ImageComponent**[mRow];
@@ -376,14 +407,17 @@ void ViewController::preload()
 			mLogoList[i][j] = new ImageComponent(mWindow);
 			mLogoList[i][j]->setImage(":/logo.png");
 			if (i % 2 == 0)
-				mLogoList[i][j]->setPosition(j * WIDTH, (float)Renderer::getScreenHeight() + i * HEIGHT);
+				mLogoList[i][j]->setPosition(j * WIDTH, i * HEIGHT);
 			else
-				mLogoList[i][j]->setPosition(j * WIDTH + WIDTH / 2, (float)Renderer::getScreenHeight() + i * HEIGHT);
+				mLogoList[i][j]->setPosition(j * WIDTH + WIDTH / 2, i * HEIGHT);
 		}
 	}
 
-	mBackgroundOverlay->setPosition(0, (float)Renderer::getScreenHeight());
+	mBackgroundOverlay->setPosition(0, 0);
 	mBackgroundOverlay->setResize((float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight());
+
+	mHelpBG->setPosition(0, (float)Renderer::getScreenHeight() - HELP_HEIGHT);
+	mHelpBG->setResize((float)Renderer::getScreenWidth(), HELP_HEIGHT);
 
 	for(auto it = SystemData::sSystemVector.begin(); it != SystemData::sSystemVector.end(); it++)
 	{

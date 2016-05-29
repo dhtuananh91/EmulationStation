@@ -31,6 +31,7 @@ static const std::map<std::string, const char*> ICON_PATH_MAP = boost::assign::m
 
 HelpComponent::HelpComponent(Window* window) : GuiComponent(window)
 {
+
 }
 
 void HelpComponent::clearPrompts()
@@ -135,7 +136,7 @@ void HelpComponent::setOpacity(unsigned char opacity)
 void HelpComponent::render(const Eigen::Affine3f& parentTrans)
 {
 	Eigen::Affine3f trans = parentTrans * getTransform();
-	
+
 	if(mGrid)
 		mGrid->render(trans);
 }

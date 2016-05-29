@@ -77,6 +77,9 @@ extern const unsigned char button_png_data[];
 extern const size_t off_svg_size;
 extern const unsigned char off_svg_data[];
 
+extern const size_t blank_png_size;
+extern const unsigned char blank_png_data[];
+
 extern const size_t window_icon_256_png_size;
 extern const unsigned char window_icon_256_png_data[];
 

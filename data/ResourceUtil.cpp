@@ -2,7 +2,7 @@
 
 #include "Resources.h"
 
-const size_t res2hNrOfFiles = 47;
+const size_t res2hNrOfFiles = 48;
 const Res2hEntry res2hFiles[res2hNrOfFiles] = {
     {":/on.svg", on_svg_size, on_svg_data},
     {":/fav_add.svg", fav_add_svg_size, fav_add_svg_data},
@@ -28,6 +28,7 @@ const Res2hEntry res2hFiles[res2hNrOfFiles] = {
     {":/opensans_hebrew_condensed_regular.ttf", opensans_hebrew_condensed_regular_ttf_size, opensans_hebrew_condensed_regular_ttf_data},
     {":/button.png", button_png_size, button_png_data},
     {":/off.svg", off_svg_size, off_svg_data},
+    {":/blank.png", blank_png_size, blank_png_data},
     {":/window_icon_256.png", window_icon_256_png_size, window_icon_256_png_data},
     {":/arrow.svg", arrow_svg_size, arrow_svg_data},
     {":/fav_remove.svg", fav_remove_svg_size, fav_remove_svg_data},
@@ -78,29 +79,30 @@ res2hMapType::value_type mapTemp[] = {
     std::make_pair(":/opensans_hebrew_condensed_regular.ttf", res2hFiles[21]),
     std::make_pair(":/button.png", res2hFiles[22]),
     std::make_pair(":/off.svg", res2hFiles[23]),
-    std::make_pair(":/window_icon_256.png", res2hFiles[24]),
-    std::make_pair(":/arrow.svg", res2hFiles[25]),
-    std::make_pair(":/fav_remove.svg", res2hFiles[26]),
-    std::make_pair(":/help/dpad_left.svg", res2hFiles[27]),
-    std::make_pair(":/help/button_start.svg", res2hFiles[28]),
-    std::make_pair(":/help/analog_left.svg", res2hFiles[29]),
-    std::make_pair(":/help/dpad_down.svg", res2hFiles[30]),
-    std::make_pair(":/help/button_l.svg", res2hFiles[31]),
-    std::make_pair(":/help/dpad_updown.svg", res2hFiles[32]),
-    std::make_pair(":/help/analog_down.svg", res2hFiles[33]),
-    std::make_pair(":/help/button_y.svg", res2hFiles[34]),
-    std::make_pair(":/help/button_r.svg", res2hFiles[35]),
-    std::make_pair(":/help/button_a.svg", res2hFiles[36]),
-    std::make_pair(":/help/dpad_right.svg", res2hFiles[37]),
-    std::make_pair(":/help/button_select.svg", res2hFiles[38]),
-    std::make_pair(":/help/analog_right.svg", res2hFiles[39]),
-    std::make_pair(":/help/button_x.svg", res2hFiles[40]),
-    std::make_pair(":/help/button_b.svg", res2hFiles[41]),
-    std::make_pair(":/help/dpad_all.svg", res2hFiles[42]),
-    std::make_pair(":/help/analog_up.svg", res2hFiles[43]),
-    std::make_pair(":/help/dpad_up.svg", res2hFiles[44]),
-    std::make_pair(":/help/analog_thumb.svg", res2hFiles[45]),
-    std::make_pair(":/help/dpad_leftright.svg", res2hFiles[46])
+    std::make_pair(":/blank.png", res2hFiles[24]),
+    std::make_pair(":/window_icon_256.png", res2hFiles[25]),
+    std::make_pair(":/arrow.svg", res2hFiles[26]),
+    std::make_pair(":/fav_remove.svg", res2hFiles[27]),
+    std::make_pair(":/help/dpad_left.svg", res2hFiles[28]),
+    std::make_pair(":/help/button_start.svg", res2hFiles[29]),
+    std::make_pair(":/help/analog_left.svg", res2hFiles[30]),
+    std::make_pair(":/help/dpad_down.svg", res2hFiles[31]),
+    std::make_pair(":/help/button_l.svg", res2hFiles[32]),
+    std::make_pair(":/help/dpad_updown.svg", res2hFiles[33]),
+    std::make_pair(":/help/analog_down.svg", res2hFiles[34]),
+    std::make_pair(":/help/button_y.svg", res2hFiles[35]),
+    std::make_pair(":/help/button_r.svg", res2hFiles[36]),
+    std::make_pair(":/help/button_a.svg", res2hFiles[37]),
+    std::make_pair(":/help/dpad_right.svg", res2hFiles[38]),
+    std::make_pair(":/help/button_select.svg", res2hFiles[39]),
+    std::make_pair(":/help/analog_right.svg", res2hFiles[40]),
+    std::make_pair(":/help/button_x.svg", res2hFiles[41]),
+    std::make_pair(":/help/button_b.svg", res2hFiles[42]),
+    std::make_pair(":/help/dpad_all.svg", res2hFiles[43]),
+    std::make_pair(":/help/analog_up.svg", res2hFiles[44]),
+    std::make_pair(":/help/dpad_up.svg", res2hFiles[45]),
+    std::make_pair(":/help/analog_thumb.svg", res2hFiles[46]),
+    std::make_pair(":/help/dpad_leftright.svg", res2hFiles[47])
 };
 
 res2hMapType res2hMap(mapTemp, mapTemp + sizeof mapTemp / sizeof mapTemp[0]);

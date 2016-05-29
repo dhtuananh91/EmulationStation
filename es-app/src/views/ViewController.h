@@ -74,6 +74,7 @@ private:
 
 	void playViewTransition();
 	int getSystemId(SystemData* system);
+	void translateBackground(float x, float y);
 	
 	std::shared_ptr<GuiComponent> mCurrentView;
 	std::map< SystemData*, std::shared_ptr<IGameListView> > mGameListViews;
@@ -89,6 +90,9 @@ private:
 	ImageComponent*** mLogoList;
 	int mRow;
 	int mCol;
+	Eigen::Vector3f mOffset;
 	static int WIDTH;
 	static int HEIGHT;
+	static int HELP_HEIGHT;
+	ImageComponent* mHelpBG;
 };
