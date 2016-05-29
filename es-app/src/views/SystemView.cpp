@@ -291,6 +291,9 @@ void SystemView::render(const Eigen::Affine3f& parentTrans)
 		Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), 0x00000000 | (unsigned char)(mExtrasFadeOpacity * 255));
 	}
 
+	Renderer::setMatrix(trans);
+	Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), 0x0000FFFF);
+
 	// draw logos
 	float xOff = (mSize.x() - logoSize().x())/2 - (mCamOffset * logoSizeX);
 	float yOff = (mSize.y() - logoSize().y())/2;

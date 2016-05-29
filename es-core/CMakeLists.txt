@@ -112,7 +112,8 @@ set(CORE_SOURCES
 
 set(EMBEDDED_ASSET_SOURCES
 	${emulationstation-all_SOURCE_DIR}/data/ResourceUtil.cpp
-    ${emulationstation-all_SOURCE_DIR}/data/converted/splash_svg.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/splash_png.cpp
+    ${emulationstation-all_SOURCE_DIR}/data/converted/background_png.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/window_icon_256_png.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/button_png.cpp
     ${emulationstation-all_SOURCE_DIR}/data/converted/button_filled_png.cpp
