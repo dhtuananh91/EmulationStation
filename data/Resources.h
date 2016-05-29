@@ -44,6 +44,9 @@ extern const unsigned char checkbox_checked_svg_data[];
 extern const size_t textinput_ninepatch_png_size;
 extern const unsigned char textinput_ninepatch_png_data[];
 
+extern const size_t logo_png_size;
+extern const unsigned char logo_png_data[];
+
 extern const size_t busy_1_svg_size;
 extern const unsigned char busy_1_svg_data[];
 
