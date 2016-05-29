@@ -416,6 +416,7 @@ void ViewController::preload()
 	mBackgroundOverlay->setPosition(0, 0);
 	mBackgroundOverlay->setResize((float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight());
 
+	HELP_HEIGHT = (int)(50.0f / 768 * Renderer::getScreenHeight());
 	mHelpBG->setPosition(0, (float)Renderer::getScreenHeight() - HELP_HEIGHT);
 	mHelpBG->setResize((float)Renderer::getScreenWidth(), HELP_HEIGHT);
 
