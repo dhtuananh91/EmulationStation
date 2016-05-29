@@ -13,6 +13,8 @@
 #include "animations/LambdaAnimation.h"
 
 ViewController* ViewController::sInstance = NULL;
+int ViewController::HEIGHT = 120;
+int ViewController::WIDTH = 260;
 
 ViewController* ViewController::get()
 {
@@ -30,10 +32,28 @@ ViewController::ViewController(Window* window)
 	: GuiComponent(window), mCurrentView(nullptr), mCamera(Eigen::Affine3f::Identity()), mFadeOpacity(0), mLockInput(false)
 {
 	mState.viewing = NOTHING;
+
+	mBackgroundOverlay = new ImageComponent(window);
+	mBackgroundOverlay->setImage(":/background.png");
+
+	mLogoList = NULL;
 }
 
 ViewController::~ViewController()
 {
+	delete mBackgroundOverlay;
+	if (mLogoList != NULL) {
+		for (int i = 0; i < mRow; ++i) {
+			for (int j = 0; j < mCol; ++j) {
+				delete mLogoList[i][j];
+				mLogoList[i][j] = NULL;
+			}
+			delete mLogoList[i];
+			mLogoList[i] = NULL;
+		}
+		delete mLogoList;
+		mLogoList = NULL;
+	}
 	assert(sInstance == this);
 	sInstance = NULL;
 }
@@ -279,6 +299,28 @@ void ViewController::update(int deltaTime)
 		mCurrentView->update(deltaTime);
 	}
 
+	if (mLogoList != NULL) {
+		for (int i = 0; i < mRow; ++i) {
+			for (int j = 0; j < mCol; ++j) {
+				Eigen::Vector3f pos = mLogoList[i][j]->getPosition();
+				if (i % 2 == 0) {
+					if (pos.x() > Renderer::getScreenWidth()) {
+						pos -= Eigen::Vector3f(WIDTH * mCol, 0, 0);
+					} else {
+						pos += Eigen::Vector3f(deltaTime / 1000.0f * 50, 0, 0);
+					}
+				} else {
+					if (pos.x() < -WIDTH) {
+						pos += Eigen::Vector3f(WIDTH * mCol, 0, 0);
+					} else {
+						pos -= Eigen::Vector3f(deltaTime / 1000.0f * 50, 0, 0);
+					}
+				}
+				mLogoList[i][j]->setPosition(pos);
+			}
+		}
+	}
+
 	updateSelf(deltaTime);
 }
 
@@ -289,6 +331,13 @@ void ViewController::render(const Eigen::Affine3f& parentTrans)
 	// camera position, position + size
 	Eigen::Vector3f viewStart = trans.inverse().translation();
 	Eigen::Vector3f viewEnd = trans.inverse() * Eigen::Vector3f((float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight(), 0);
+
+	mBackgroundOverlay->render(trans);
+	for (int i = 0; i < mRow; ++i) {
+		for (int j = 0; j < mCol; ++j) {
+			mLogoList[i][j]->render(trans);
+		}
+	}
 
 	// draw systemview
 	getSystemListView()->render(trans);
@@ -318,6 +367,24 @@ void ViewController::render(const Eigen::Affine3f& parentTrans)
 
 void ViewController::preload()
 {
+	mRow = Renderer::getScreenHeight() / ViewController::HEIGHT + 1;
+	mCol = Renderer::getScreenWidth() / ViewController::WIDTH + 2;
+	mLogoList = new ImageComponent**[mRow];
+	for (int i = 0; i < mRow; ++i) {
+		mLogoList[i] = new ImageComponent*[mCol];
+		for (int j = 0; j < mCol; ++j) {
+			mLogoList[i][j] = new ImageComponent(mWindow);
+			mLogoList[i][j]->setImage(":/logo.png");
+			if (i % 2 == 0)
+				mLogoList[i][j]->setPosition(j * WIDTH, (float)Renderer::getScreenHeight() + i * HEIGHT);
+			else
+				mLogoList[i][j]->setPosition(j * WIDTH + WIDTH / 2, (float)Renderer::getScreenHeight() + i * HEIGHT);
+		}
+	}
+
+	mBackgroundOverlay->setPosition(0, (float)Renderer::getScreenHeight());
+	mBackgroundOverlay->setResize((float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight());
+
 	for(auto it = SystemData::sSystemVector.begin(); it != SystemData::sSystemVector.end(); it++)
 	{
 		getGameListView(*it);

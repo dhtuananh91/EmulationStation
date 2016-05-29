@@ -21,6 +21,7 @@ class SystemView : public IList<SystemViewData, SystemData*>
 {
 public:
 	SystemView(Window* window);
+	virtual ~SystemView();
 
 	void goToSystem(SystemData* system, bool animate);
 
@@ -45,4 +46,6 @@ private:
 	float mCamOffset;
 	float mExtrasCamOffset;
 	float mExtrasFadeOpacity;
+
+//	ImageComponent* mBackgroundOverlay;
 };

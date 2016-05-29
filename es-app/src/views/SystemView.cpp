@@ -25,7 +25,15 @@ SystemView::SystemView(Window* window) : IList<SystemViewData, SystemData*>(wind
 	mSystemInfo.setSize(mSize.x(), mSystemInfo.getSize().y() * 1.333f);
 	mSystemInfo.setPosition(0, (mSize.y() + BAND_HEIGHT) / 2);
 
+//	mBackgroundOverlay = new ImageComponent(window);
+//	mBackgroundOverlay->setImage(":/background.png");
+//	mBackgroundOverlay->setResize((float)Renderer::getScreenWidth(), (float)Renderer::getScreenHeight());
+
 	populate();
+}
+
+SystemView::~SystemView() {
+//	delete mBackgroundOverlay;
 }
 
 void SystemView::populate()
@@ -255,7 +263,9 @@ void SystemView::render(const Eigen::Affine3f& parentTrans)
 		return;
 
 	Eigen::Affine3f trans = getTransform() * parentTrans;
-	
+
+//	mBackgroundOverlay->render(trans);
+
 	// draw the list elements (titles, backgrounds, logos)
 	const float logoSizeX = logoSize().x() + LOGO_PADDING;
 
@@ -285,14 +295,14 @@ void SystemView::render(const Eigen::Affine3f& parentTrans)
 	}
 
 	// fade extras if necessary
-	if(mExtrasFadeOpacity)
-	{
+	if (mExtrasFadeOpacity) {
 		Renderer::setMatrix(trans);
 		Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), 0x00000000 | (unsigned char)(mExtrasFadeOpacity * 255));
 	}
-
-	Renderer::setMatrix(trans);
-	Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), 0x0000FFFF);
+//	else {
+//		Renderer::setMatrix(trans);
+//		Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), 0x0000FFFF);
+//	}
 
 	// draw logos
 	float xOff = (mSize.x() - logoSize().x())/2 - (mCamOffset * logoSizeX);

@@ -84,4 +84,11 @@ private:
 	bool mLockInput;
 
 	State mState;
+
+	ImageComponent* mBackgroundOverlay;
+	ImageComponent*** mLogoList;
+	int mRow;
+	int mCol;
+	static int WIDTH;
+	static int HEIGHT;
 };
