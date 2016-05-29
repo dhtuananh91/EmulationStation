@@ -119,7 +119,7 @@ TextListComponent<T>::TextListComponent(Window* window) :
 	mFont = Font::get(FONT_SIZE_MEDIUM);
 	mUppercase = false;
 	mLineSpacing = 1.5f;
-	mSelectorColor = 0x000000FF;
+	mSelectorColor = 0xFFFFFFFF;
 	mSelectedColor = 0;
 	mColors[0] = 0x0000FFFF;
 	mColors[1] = 0x00FF00FF;
